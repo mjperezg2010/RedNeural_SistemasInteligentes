@@ -1,28 +1,23 @@
 import json
+import numpy as np
 
 def openJson(file_name):
-    matriz = []
+    matrix = []
     with open(file_name) as file:
         data = json.load(file)
 
-        matriztemp = []
-        pesos1 = data['capas'][0]['neuronas'][0]['pesos']
-        pesos2 = data['capas'][0]['neuronas'][1]['pesos']
+        for i in range(len(data['capas'])):
+            matrixtemp=[]
+            for j in range(len(data['capas'][i]['neuronas'])):
+                peso = data['capas'][i]['neuronas'][j]['pesos']
+                matrixtemp.append(peso)
+            matrix.append(matrixtemp)
 
-        matriztemp.append(pesos1)
-        matriztemp.append(pesos2)
-
-        matriztemp2 = []
-        pesos1 = data['capas'][1]['neuronas'][0]['pesos']
-        pesos2 = data['capas'][1]['neuronas'][1]['pesos']
-        matriztemp2.append(pesos1)
-        matriztemp2.append(pesos2)
+        print(np.array(matrix))
 
 
-        matriz.append(matriztemp)
-        matriz.append(matriztemp2)
 
-    return matriz,data['entradas']
+    return np.array(matrix),data['entradas']
 
 
 
