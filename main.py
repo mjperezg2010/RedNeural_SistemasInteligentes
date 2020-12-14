@@ -1,5 +1,6 @@
 import json
 import numpy as np
+import random
 
 def openJson(file_name):
     matrix = []
@@ -15,7 +16,7 @@ def openJson(file_name):
 
         print(np.array(matrix))
 
-
+        print(random.randint(0,8))
 
     return np.array(matrix),data['entradas']
 
