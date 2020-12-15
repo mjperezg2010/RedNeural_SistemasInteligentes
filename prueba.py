@@ -27,7 +27,11 @@ def load_data():
     return np.array(X.values),np.transpose(Y)
 
 
+def load_data2(file):
+    data = pd.read_csv(file)
+    X = data.loc[:, data.columns != 'clase']
+    Ytemp = data['clase']
 
 
 
-load_data()
+load_data2("part4_pokemon_go_train.csv")
