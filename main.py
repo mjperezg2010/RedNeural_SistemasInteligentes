@@ -2,6 +2,24 @@ import json
 import numpy as np
 from neural_network import neural_network
 
+def openJson(file_name):
+    matrix = []
+    with open(file_name) as file:
+        data = json.load(file)
+
+        for i in range(len(data['capas'])):
+            matrixtemp=[]
+            for j in range(len(data['capas'][i]['neuronas'])):
+                peso = data['capas'][i]['neuronas'][j]['pesos']
+                matrixtemp.append(peso)
+            matrix.append(matrixtemp)
+
+        print(np.array(matrix))
+
+
+    return np.array(matrix),data['entradas']
+
+
 def main():
     
     asdsa = neural_network ()
@@ -23,7 +41,7 @@ def main():
     
     #Xsad,_ = asdsa.L_model_forward( np.array([[0],[0]] ))
     #print(Xsad)
-                
+
 
 
 if __name__ == '__main__':

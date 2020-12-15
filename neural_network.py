@@ -4,6 +4,8 @@ import numpy as np
 import random
 import math
 import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error
+
 
 class neural_network:
     def __init__(self):
@@ -135,21 +137,45 @@ class neural_network:
 
     def L_layer_model(self,X, Y):                            
         epocas = {}
-        for j in range(0, self.epochs):
+        for j in range(0, 10):
+        #for j in range(0, self.epochs):
             predic = []
             original = []
             for i in range(len(X)):                
                 AL, caches = self.L_model_forward(np.array(X[i]).reshape(len(X[i]),1))                
                 grads = self.L_model_backward(AL, np.array(Y[i]).reshape(len(Y[i]),1), caches)
                 self.update_parameters(grads)
-                predic.append(AL)
-                original.append(X[i])
+                predic.append(list(AL.reshape(len(AL))))
+                
+                original.append(list(X[i]))
+                
                 #print ("Cost after iteration %i: %f" %(i, cost))            
                 #costs.append(cost)
             epocas['mse'+str(j)] = [predic,original]
-        self.plot_mse(epocas)
+        print("epocas")
+        print(epocas)
+        #self.plot_mse(epocas)
     
     def plot_mse(self,epocas):
-        print(epocas)
-        pass
-        
+        x=[]
+        y=[]
+        for i in epocas:
+            matriz1=[[epocas[i][0][0][0][0],epocas[i][0][0][1][0]],
+                      [epocas[i][0][1][0][0],epocas[i][0][1][1][0]],
+                      [epocas[i][0][2][0][0],epocas[i][0][2][1][0]],
+                      [epocas[i][0][3][0][0],epocas[i][0][3][1][0]]
+                    ]
+            matriz2 = [[epocas[i][1][0][0],epocas[i][1][0][1]],
+                       [epocas[i][1][1][0], epocas[i][1][1][1]],
+                       [epocas[i][1][2][0], epocas[i][1][2][1]],
+                       [epocas[i][1][3][0], epocas[i][1][3][1]]
+                     ]
+            y.append(mean_squared_error(matriz2, matriz1))
+            x.append(i)
+        #print(epocas[0])
+        plt.plot(x,y)
+        plt.show()
+
+
+
+
