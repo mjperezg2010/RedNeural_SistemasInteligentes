@@ -160,7 +160,7 @@ class neural_network:
             _original = []
             for i in range(len(X_val)):
                 AL,_ = self.L_model_forward(np.array(X_val[i]).reshape(len(X_val[i]),1))                
-                _predic.append(list(AL.reshape(len(AL))))                
+                _predic.append(list(AL.reshape(len(AL))))
                 _original.append(list(Y_val[i]))
             epocas_val[str(j)] = [_predic,_original]
 

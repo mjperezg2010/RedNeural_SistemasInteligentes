@@ -77,8 +77,8 @@ def main():
     red.L_layer_model(X,Y,50,X_val,Y_val,0.05,3)
     predicts=[]
     for i in X_test:
-        y_predict, _ = red.L_model_forward(i)
-        predicts.append(list(y_predict.reshape(len(y_predict))))
+        y_predict,_ = self.L_model_forward(np.array(i).reshape(len(i),1))
+        predicts.append(list(y_predict.reshape(len(y_predict))))                
     stadistics(red.get_coded_y(predicts),red.get_coded_y(Y_test))
 
 '''
