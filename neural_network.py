@@ -152,10 +152,13 @@ class neural_network:
                 #costs.append(cost)
             epocas[str(j)] = [predic,original]
         self.plot_mse(epocas)
-    
+        #self.minimun(epocas)
+
     def plot_mse(self,epocas):
         x=[]
         y=[]
+        ymin=[]
+        ymax=[]
         matriz1=[]
         matriz2=[]
         cont =-1
@@ -163,40 +166,40 @@ class neural_network:
         for i in epocas:
             matriz1=epocas[i][0]
             matriz2=epocas[i][1]
+            #Minimun and maximun
+            list = []
+            for j in range(len(matriz1)):
+                for k in range(len(matriz1[0])):
+                    #print(matriz1[j][k])
+                    temp = mean_squared_error([matriz2[j][k]], [matriz1[j][k]])
+                    list.append(temp)
+
+
+
             if cont ==-1:
                 y.append(mean_squared_error(matriz2, matriz1))
                 x.append(i)
+                ymin.append(min(list))
+                ymax.append(max(list))
+
                 cont=0
 
 
-            if cont == 20:
+            if cont == 10:
                 y.append(mean_squared_error(matriz2, matriz1))
+                ymin.append(min(list))
+                ymax.append(max(list))
                 x.append(i)
                 cont = 0
             cont = cont + 1
         plt.plot(x, y)
+        plt.plot(x, ymin)
+        plt.plot(x, ymax)
+        plt.ylim(0, 1)
+        plt.title("MSE")
+
         plt.show()
 
-
-        """
-        for i in epocas:
-            for j in range(len(epocas[i][0])):
-                
-                matriz1.append([epocas[i][0][j][0][0],epocas[i][0][j][1][0]])
-                matriz2.append([epocas[i][1][j][0],epocas[i][1][j][1]])
-            
-            matriz1=[[epocas[i][0][0][0][0],epocas[i][0][0][1][0]],
-                      [epocas[i][0][1][0][0],epocas[i][0][1][1][0]],
-                      [epocas[i][0][2][0][0],epocas[i][0][2][1][0]],
-                      [epocas[i][0][3][0][0],epocas[i][0][3][1][0]]
-                    ]
-            matriz2 = [[epocas[i][1][0][0],epocas[i][1][0][1]],
-                       [epocas[i][1][1][0], epocas[i][1][1][1]],
-                       [epocas[i][1][2][0], epocas[i][1][2][1]],
-                       [epocas[i][1][3][0], epocas[i][1][3][1]]
-                     ]
-            
-        """
 
 
 
