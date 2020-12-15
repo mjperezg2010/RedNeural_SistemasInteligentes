@@ -1,4 +1,4 @@
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.metrics import f1_score, confusion_matrix, accuracy_score
@@ -47,10 +47,13 @@ def stadistics(y_predict,y_true):
     results = f1_score(y_true, y_predict, average=None)
     acum = 0
     total = len(results)
+    cont =0
     for j in results:
+        print("F1",cont,":",j)
         acum = acum + j
+        cont = cont+1
     f1 = acum / total
-    print("Promedio F1 por clase: ")
+    print("Promedio F1 por clase: ",f1)
     #Accuracy
     print("Accuracy: ",accuracy_score(y_true, y_predict))
     #matriz
@@ -75,25 +78,47 @@ def main():
     red.structure = [5,4,5]
     red.initialize_parameters()
     red.L_layer_model(X,Y,50,X_val,Y_val,0.05,3)
-    predicts=[]
-    for i in X_test:
-        y_predict,_ = self.L_model_forward(np.array(i).reshape(len(i),1))
-        predicts.append(list(y_predict.reshape(len(y_predict))))                
-    stadistics(red.get_coded_y(predicts),red.get_coded_y(Y_test))
 
-'''
+    predicts = []
+    for i in X_test:
+        y_predict, _ = red.L_model_forward(np.array(i).reshape(len(i), 1))
+        predicts.append(list(y_predict.reshape(len(y_predict))))
+    stadistics(red.get_coded_y(predicts), red.get_coded_y(Y_test))
+
+    print("--------------------")
+
     red.structure = [5,16,5]
     red.initialize_parameters()    
     red.L_layer_model(X,Y,50,X_val,Y_val,0.05,3)
 
+    predicts = []
+    for i in X_test:
+        y_predict, _ = red.L_model_forward(np.array(i).reshape(len(i), 1))
+        predicts.append(list(y_predict.reshape(len(y_predict))))
+    stadistics(red.get_coded_y(predicts), red.get_coded_y(Y_test))
+
+    print("--------------------")
     red.structure = [5,32,5]
     red.initialize_parameters()    
     red.L_layer_model(X,Y,50,X_val,Y_val,0.05,3)
 
+    predicts = []
+    for i in X_test:
+        y_predict, _ = red.L_model_forward(np.array(i).reshape(len(i), 1))
+        predicts.append(list(y_predict.reshape(len(y_predict))))
+    stadistics(red.get_coded_y(predicts), red.get_coded_y(Y_test))
+
+    print("--------------------")
     red.structure = [5,64,5]
     red.initialize_parameters()    
     red.L_layer_model(X,Y,50,X_val,Y_val,0.05,3)
-   ''' 
+
+    predicts = []
+    for i in X_test:
+        y_predict, _ = red.L_model_forward(np.array(i).reshape(len(i), 1))
+        predicts.append(list(y_predict.reshape(len(y_predict))))
+    stadistics(red.get_coded_y(predicts), red.get_coded_y(Y_test))
+
 
 
 if __name__ == '__main__':
