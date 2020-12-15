@@ -160,6 +160,7 @@ class neural_network:
         mse_prev = 100
         self.epochs = epochs
         for j in range(0, epochs):
+            print("NICOLLLE")
             predic = []
             original = []
             for i in range(len(X)):                
