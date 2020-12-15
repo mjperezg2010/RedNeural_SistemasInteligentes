@@ -30,7 +30,14 @@ def load_data():
 def load_data2(file):
     data = pd.read_csv(file)
     X = data.loc[:, data.columns != 'nombre']
-    Ytemp = data['PC']
+    X = X.loc[:, X.columns != 'PC']
+    Y = data['PC']
+
+    scaler = StandardScaler()
+    scaled = scaler.fit_transform(X)
+    X = pd.DataFrame(scaled)
+
+    return np.array(X) ,np.array(Y)
 
 
 

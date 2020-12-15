@@ -7,28 +7,17 @@ from neural_network import neural_network
 import seaborn
 
 
-def load_data(file_name):
-    data = pd.read_csv(file_name)
-    X = data.loc[:, data.columns != 'clase']
-    Ytemp = data['clase']
+def load_data(file):
+    data = pd.read_csv(file)
+    X = data.loc[:, data.columns != 'nombre']
+    X = X.loc[:, X.columns != 'PC']
+    Y = data['PC']
 
     scaler = StandardScaler()
     scaled = scaler.fit_transform(X)
     X = pd.DataFrame(scaled)
-    Y=[]
-    for i in Ytemp.values:
-        if i == 'pizza':
-            Y.append([1,0,0,0,0])
-        elif i == 'hamburguesa':
-            Y.append([0, 1, 0, 0, 0])
-        elif i == 'arroz_frito':
-            Y.append([0, 0, 1, 0, 0])
-        elif i == 'ensalada':
-            Y.append([0, 0, 0, 1, 0])
-        elif i == 'pollo_horneado':
-            Y.append([0, 0, 0, 0, 1])
 
-    return np.array(X.values),np.array(Y)
+    return np.array(X), np.array(Y)
 
 '''
 nicky1 [[0 0]
