@@ -152,4 +152,4 @@ class neural_network:
     def plot_mse(self,epocas):
         print(epocas)
         pass
-
+        
