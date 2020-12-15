@@ -13,11 +13,35 @@ def load_data(file):
     X = X.loc[:, X.columns != 'PC']
     Y = data['PC']
 
-    scaler = StandardScaler()
-    scaled = scaler.fit_transform(X)
-    X = pd.DataFrame(scaled)
+    #scaler = StandardScaler()
+    #scaled = scaler.fit_transform(X)
+    scaled = np.array(X.values)
+    for i in range(len(scaled[0])):
+        OldMin = min(scaled[:,i])
+        OldMax = max(scaled[:,i])
+        NewMax = 1
+        NewMin = -1
+        OldRange = (OldMax - OldMin)
+        NewRange = (NewMax - NewMin)
+        for j in range(len(scaled[:,i])):
+            NewValue = (((scaled[:,i][j] - OldMin) * NewRange) / OldRange) + NewMin
+            scaled[:,i][j] = NewValue
+    print(scaled)
 
-    return np.array(X), np.array(Y)
+
+    Y = np.array(Y)
+
+    OldMin = min(Y)
+    OldMax = max(Y)
+    OldRange = (OldMax - OldMin)
+
+    for i in range(len(Y)):
+        NewValue = (((Y[i] - OldMin) * NewRange) / OldRange) + NewMin
+        Y[i] = NewValue
+
+
+
+    return scaled, Y
 
 def stadistics(y_predicts, y_true):
     print("MSE: ",mean_squared_error(y_true, y_predicts))
@@ -42,7 +66,7 @@ def main():
     for i in X_test:
         y_predict, _ = red.L_model_forward(np.array(i).reshape(len(i), 1))
         predicts.append(list(y_predict.reshape(len(y_predict))))
-    stadistics(red.get_coded_y(predicts), red.get_coded_y(Y_test))
+    stadistics(predicts, Y_test)
 
     print("--------------------")
 '''
