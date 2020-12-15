@@ -9,7 +9,8 @@ from sklearn.metrics import mean_squared_error
 
 class neural_network:
     def __init__(self):
-        pass
+        self.learning_rate = 0.075
+        self.epochs = 100
     
     def load_info(self,file_name):
         params = {}
@@ -140,6 +141,7 @@ class neural_network:
         actual_rounds = -1
         mse_actual = 0
         mse_prev = 100
+        self.epochs = epochs
         for j in range(0, self.epochs):
             predic = []
             original = []
