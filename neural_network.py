@@ -137,19 +137,24 @@ class neural_network:
 
     def L_layer_model(self,X, Y):                            
         epocas = {}
-        for j in range(0, self.epochs):
+        for j in range(0, 10):
+        #for j in range(0, self.epochs):
             predic = []
             original = []
             for i in range(len(X)):                
                 AL, caches = self.L_model_forward(np.array(X[i]).reshape(len(X[i]),1))                
                 grads = self.L_model_backward(AL, np.array(Y[i]).reshape(len(Y[i]),1), caches)
                 self.update_parameters(grads)
-                predic.append(AL)
-                original.append(X[i])
+                predic.append(list(AL.reshape(len(AL))))
+                
+                original.append(list(X[i]))
+                
                 #print ("Cost after iteration %i: %f" %(i, cost))            
                 #costs.append(cost)
             epocas['mse'+str(j)] = [predic,original]
-        self.plot_mse(epocas)
+        print("epocas")
+        print(epocas)
+        #self.plot_mse(epocas)
     
     def plot_mse(self,epocas):
         x=[]
