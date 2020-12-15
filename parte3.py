@@ -78,7 +78,7 @@ def main():
     predicts=[]
     for i in X_test:
         y_predict, _ = red.L_model_forward(i)
-        predicts.append(y_predict)
+        predicts.append(list(y_predict.reshape(len(y_predict))))
     stadistics(red.get_coded_y(predicts),red.get_coded_y(Y_test))
 
 '''
