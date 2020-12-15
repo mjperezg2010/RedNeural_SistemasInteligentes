@@ -31,31 +31,12 @@ nicky2 [[0 0]
 
  '''
 
-def stadistics(y_predict,y_true):
-    # f1
-    results = f1_score(y_true, y_predict, average=None)
-    acum = 0
-    total = len(results)
-    cont =0
-    for j in results:
-        print("F1",cont,":",j)
-        acum = acum + j
-        cont = cont+1
-    f1 = acum / total
-    print("Promedio F1 por clase: ",f1)
-    #Accuracy
-    print("Accuracy: ",accuracy_score(y_true, y_predict))
-    #matriz
-    matrix = confusion_matrix(y_true, y_predict)
-    seaborn.heatmap(matrix, cmap='inferno', cbar=False, annot=True, fmt="")
-    plt.title("Matriz Confusion")
-    plt.show()
 
 
 def main():
-    X,Y = load_data("part3_data_train.csv")
-    X_val,Y_val = load_data("part3_data_val.csv")
-    X_test,Y_test = load_data("part3_data_test.csv")
+    X,Y = load_data("part4_pokemon_go_train.csv")
+    X_val,Y_val = load_data("part4_pokemon_go_val.csv")
+    X_test,Y_test = load_data("part4_pokemon_go_test.csv")
 
     red = neural_network()
     red.type = 'regression'
