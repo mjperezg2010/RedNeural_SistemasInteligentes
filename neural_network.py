@@ -154,7 +154,15 @@ class neural_network:
     def plot_mse(self,epocas):
         x=[]
         y=[]
+        matriz1=[]
+        matriz2=[]
+        cont =0
         for i in epocas:
+            for j in range(len(epocas[i][0])):
+                
+                matriz1.append([epocas[i][0][j][0][0],epocas[i][0][j][1][0]])
+                matriz2.append([epocas[i][1][j][0],epocas[i][1][j][1]])
+            """
             matriz1=[[epocas[i][0][0][0][0],epocas[i][0][0][1][0]],
                       [epocas[i][0][1][0][0],epocas[i][0][1][1][0]],
                       [epocas[i][0][2][0][0],epocas[i][0][2][1][0]],
@@ -165,9 +173,17 @@ class neural_network:
                        [epocas[i][1][2][0], epocas[i][1][2][1]],
                        [epocas[i][1][3][0], epocas[i][1][3][1]]
                      ]
+            """
+
             y.append(mean_squared_error(matriz2, matriz1))
             x.append(i)
-        #print(epocas[0])
+            if cont==20:
+                plt.plot(x, y)
+                plt.show()
+                x = []
+                y = []
+                cont=0
+            cont=cont+1
         plt.plot(x,y)
         plt.show()
 
