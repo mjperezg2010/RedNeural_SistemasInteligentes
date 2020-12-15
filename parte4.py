@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn.metrics import f1_score, confusion_matrix, accuracy_score
+from sklearn.metrics import f1_score, confusion_matrix, accuracy_score, mean_squared_error
 from sklearn.preprocessing import StandardScaler
 from neural_network import neural_network
 import seaborn
@@ -19,17 +19,9 @@ def load_data(file):
 
     return np.array(X), np.array(Y)
 
-'''
-nicky1 [[0 0]
- [0 1]
- [1 0]
- [1 1]]
-nicky2 [[0 0]
- [0 1]
- [0 1]
- [1 0]]
+def stadistics(y_predicts, y_true):
+    print("MSE: ",mean_squared_error(y_true, y_predicts))
 
- '''
 
 
 
