@@ -192,10 +192,11 @@ class neural_network:
                 x.append(i)
                 cont = 0
             cont = cont + 1
-        plt.plot(x, y)
-        plt.plot(x, ymin)
-        plt.plot(x, ymax)
+        plt.plot(x, y, label="MSE")
+        plt.plot(x, ymin, label="MSE minumun")
+        plt.plot(x, ymax, label="MSE maximun")
         plt.ylim(0, 1)
+        plt.legend()
         plt.title("MSE")
 
         plt.show()
