@@ -27,7 +27,7 @@ def stadistics(y_predicts, y_true):
 
 def main():
     X,Y = load_data("part4_pokemon_go_train.csv")
-    X_val,Y_val = load_data("part4_pokemon_go_val.csv")
+    X_val,Y_val = load_data("part4_pokemon_go_validation.csv")
     X_test,Y_test = load_data("part4_pokemon_go_test.csv")
 
     red = neural_network()
