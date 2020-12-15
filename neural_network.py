@@ -14,6 +14,7 @@ class neural_network:
         self.epsilon = -1
         self.type = 'regression'
         self.structure = []
+        self.flag = False
     
     def load_info(self,file_name):
         params = {}
@@ -53,9 +54,13 @@ class neural_network:
         cache = (A, W, b)    
         return Z, cache
 
-    def linear_activation_forward(self,A_prev, W, b):        
+    def linear_activation_forward(self,A_prev, W, b, _type):        
         Z, linear_cache = self.linear_forward(A_prev, W, b)
-        A, activation_cache = self.sigmoid(Z)  
+        if _type != 'regression':
+            A, activation_cache = self.sigmoid(Z)  
+        else:
+            A = Z
+            activation_cache = linear_cache
         cache = (linear_cache, activation_cache)
         return A, cache
         
@@ -71,10 +76,13 @@ class neural_network:
         L = len(parameters) // 2
         for l in range(1, L):
             A_prev = A 
-            A, cache = self.linear_activation_forward(A_prev, parameters['W' + str(l)], parameters['b' + str(l)])
+            A, cache = self.linear_activation_forward(A_prev, parameters['W' + str(l)], parameters['b' + str(l)],"asd")
             caches.append(cache)
-        
-        AL, cache = self.linear_activation_forward(A, parameters['W' + str(L)], parameters['b' + str(L)])    
+
+        if self.flag:        
+            AL, cache = self.linear_activation_forward(A, parameters['W' + str(L)], parameters['b' + str(L)],"regression")    
+        else:
+            AL, cache = self.linear_activation_forward(A, parameters['W' + str(L)], parameters['b' + str(L)],"sdasd")    
         caches.append(cache)
                 
         return AL, caches
@@ -93,10 +101,12 @@ class neural_network:
         dA_prev = np.dot(np.transpose(W),dZ)
         return dA_prev, dW, db
 
-    def linear_activation_backward(self,dA, cache):
+    def linear_activation_backward(self,dA, cache, type_):
         linear_cache, activation_cache = cache
-
-        dZ = self.sigmoid_backward(dA, activation_cache)
+        if type_ != 'regression_last':        
+            dZ = self.sigmoid_backward(dA, activation_cache)
+        else:
+            dZ = dA
         dA_prev, dW, db = self.linear_backward(dZ, linear_cache)
         
         return dA_prev, dW, db
@@ -106,7 +116,8 @@ class neural_network:
         s = 1/(1+np.exp(-Z))
         dZ = dA * s * (1-s)
         return dZ
-
+    
+    
 
     def L_model_backward(self,AL,Y,caches):
     
@@ -118,11 +129,14 @@ class neural_network:
         dAL = - (np.divide(Y, AL) - np.divide(1 - Y, 1 - AL))
 
         current_cache = caches[L-1]
-        grads["dA" + str(L-1)], grads["dW" + str(L)], grads["db" + str(L)] = self.linear_activation_backward(dAL, current_cache)
+        if self.flag:
+            grads["dA" + str(L-1)], grads["dW" + str(L)], grads["db" + str(L)] = self.linear_activation_backward(dAL, current_cache,"regression_last")
+        else:
+            grads["dA" + str(L-1)], grads["dW" + str(L)], grads["db" + str(L)] = self.linear_activation_backward(dAL, current_cache,"asdasds")
 
         for l in reversed(range(L-1)):
             current_cache = caches[l]
-            dA_prev_temp, dW_temp, db_temp = self.linear_activation_backward(grads["dA" + str(l+1)], current_cache)
+            dA_prev_temp, dW_temp, db_temp = self.linear_activation_backward(grads["dA" + str(l+1)], current_cache,"asd")
             grads["dA" + str(l)] = dA_prev_temp
             grads["dW" + str(l + 1)] = dW_temp
             grads["db" + str(l + 1)] = db_temp
@@ -159,7 +173,7 @@ class neural_network:
             _predic = []
             _original = []
             for i in range(len(X_val)):
-                AL,_ = self.L_model_forward(np.array(X_val[i]).reshape(len(X_val[i]),1))                
+                AL,_ = self.L_model_forward(np.array(X_val[i]).reshape(len(X_val[i]),1))
                 _predic.append(list(AL.reshape(len(AL))))
                 _original.append(list(Y_val[i]))
             epocas_val[str(j)] = [_predic,_original]
@@ -173,15 +187,7 @@ class neural_network:
                 mse_prev = mse_actual
                 if actual_rounds == max_rounds:
                     break
-            '''
-            if self.type == 'classification':
-                                                                         
-                self.calculate_stats(self.get_coded_y(epocas[str(j)][0]),
-                                        self.get_coded_y(epocas[str(j)][1]))
-                
-                self.calculate_stats(self.get_coded_y(epocas_val[str(j)][0]),
-                                        self.get_coded_y(epocas_val[str(j)][1]))
-            '''
+       
         if self.type == 'regression':
             self.plot_mse(epocas)
             if len(X_val) != 0:
