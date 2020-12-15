@@ -29,8 +29,8 @@ def load_data():
 
 def load_data2(file):
     data = pd.read_csv(file)
-    X = data.loc[:, data.columns != 'clase']
-    Ytemp = data['clase']
+    X = data.loc[:, data.columns != 'nombre']
+    Ytemp = data['PC']
 
 
 
