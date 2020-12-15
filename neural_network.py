@@ -144,15 +144,14 @@ class neural_network:
                 AL, caches = self.L_model_forward(np.array(X[i]).reshape(len(X[i]),1))                
                 grads = self.L_model_backward(AL, np.array(Y[i]).reshape(len(Y[i]),1), caches)
                 self.update_parameters(grads)
-                predic.append(list(AL.reshape(len(AL))))
-                
+                predic.append(list(AL.reshape(len(AL))))                
                 original.append(list(X[i]))
-                
-                #print ("Cost after iteration %i: %f" %(i, cost))            
-                #costs.append(cost)
             epocas[str(j)] = [predic,original]
-        self.plot_mse(epocas)
-        #self.minimun(epocas)
+        self.plot_mse(epocas)        
+
+    def evaluar(self,X):        
+        Y,_  = self.L_model_forward(X)
+        return Y
 
     def plot_mse(self,epocas):
         x=[]
