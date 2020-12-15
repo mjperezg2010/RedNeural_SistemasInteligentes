@@ -36,7 +36,7 @@ def main():
 
     red.structure = [7,16,1]
     red.initialize_parameters()
-    red.L_layer_model(X,Y,50,X_val,Y_val,0.05,3)
+    red.L_layer_model(X,Y.reshape(Y.shape[0],1),50,X_val,Y_val.reshape(Y_val.shape[0],1),0.05,3)
 
     predicts = []
     for i in X_test:
