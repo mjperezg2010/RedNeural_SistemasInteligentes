@@ -1,5 +1,6 @@
 import pandas
 import numpy as np
+from neural_network import neural_network
 
 def load_data(file):
     data=pandas.read_csv(file)
@@ -9,8 +10,15 @@ def load_data(file):
 
 
 def main():
-    load_data("part2_train_data.csv")
-
+    X,Y = load_data("part2_train_data.csv")
+    red = neural_network()
+    for i in range(20):
+        print("Model",i+1)
+        red.structure = [2,2,2]
+        red.initialize_parameters()
+        red.L_layer_model(X,Y,100,X_val=[],Y_val=[],epsilon=-1,max_rounds=-1)
+        print("Params",red.params)
+        print()
 
 
 
