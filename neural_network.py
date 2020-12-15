@@ -213,7 +213,10 @@ class neural_network:
         return Y
 
     def plot_classifcacion(self,epocas):
-        pass
+        x=[]
+        y=[]
+        for i in epocas:
+            matrix1=epocas[i][0]
 
     def plot_mse(self,epocas):
         x=[]
