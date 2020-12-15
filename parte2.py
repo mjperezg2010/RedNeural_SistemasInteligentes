@@ -12,6 +12,10 @@ def load_data(file):
 
 def main():
     X,Y = load_data("part2_train_data.csv")
+
+    print("nicky1",X)
+    print("nicky2",Y)
+
     red = neural_network()
     for i in range(20):
         print("Model",i+1)

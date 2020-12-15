@@ -11,6 +11,9 @@ class neural_network:
     def __init__(self):
         self.learning_rate = 0.075
         self.epochs = 100
+        self.epsilon = -1
+        self.type = 'regression'
+        self.structure = []
     
     def load_info(self,file_name):
         params = {}
@@ -32,8 +35,7 @@ class neural_network:
                 params['b'+str(i+1)] = (np.array(biastemp)).reshape((len(biastemp),1))
         self.params = params
         self.structure = structure
-        self.learning_rate = 0.075
-        self.epochs = 100
+        self.learning_rate = 0.075        
 
     def initialize_parameters(self):    
         parameters = {}
@@ -138,25 +140,30 @@ class neural_network:
 
     def L_layer_model(self,X,Y,epochs,X_val=[],Y_val=[],epsilon=-1,max_rounds=-1):
         epocas = {}
+        epocas_val = {}
         actual_rounds = -1
         mse_actual = 0
         mse_prev = 100
         self.epochs = epochs
-        for j in range(0, self.epochs):
+        for j in range(0, epochs):
             predic = []
             original = []
             for i in range(len(X)):                
                 AL, caches = self.L_model_forward(np.array(X[i]).reshape(len(X[i]),1))
                 grads = self.L_model_backward(AL, np.array(Y[i]).reshape(len(Y[i]),1), caches)
-                self.update_parameters(grads)
-                if len(X_val) != 0 and len(Y_val) != 0:
-                    Y_pred, _ = self.L_model_forward(np.array(X_val[i]).reshape(len(X_val[i]),1))
-                    predic.append(list(Y_pred.reshape(len(Y_pred))))                
-                    original.append(list(Y[i]))
-                else:
-                    predic.append(list(AL.reshape(len(AL))))                
-                    original.append(list(X[i]))
+                self.update_parameters(grads)                
+                predic.append(list(AL.reshape(len(AL))))                
+                original.append(list(Y[i]))
             epocas[str(j)] = [predic,original]
+
+            _predic = []
+            _original = []
+            for i in range(len(X_val)):
+                AL,_ = self.L_model_forward(np.array(X_val[i]).reshape(len(X_val[i]),1))                
+                _predic.append(list(AL.reshape(len(AL))))                
+                _original.append(list(Y_val[i]))
+            epocas_val[str(j)] = [_predic,_original]
+
             if epsilon!=-1 and max_rounds!=-1:
                 mse_actual = mean_squared_error(original, predic)
                 if abs(mse_actual-mse_prev) > epsilon:
@@ -166,12 +173,47 @@ class neural_network:
                 mse_prev = mse_actual
                 if actual_rounds == max_rounds:
                     break
-                                    
-        self.plot_mse(epocas)        
+            '''
+            if self.type == 'classification':
+                                                                         
+                self.calculate_stats(self.get_coded_y(epocas[str(j)][0]),
+                                        self.get_coded_y(epocas[str(j)][1]))
+                
+                self.calculate_stats(self.get_coded_y(epocas_val[str(j)][0]),
+                                        self.get_coded_y(epocas_val[str(j)][1]))
+            '''
+        if self.type == 'regression':
+            self.plot_mse(epocas)    
+            self.plot_mse(epocas_val) 
+        else:
+            self.plot_classifcacion(epocas)
+            self.plot_classifcacion(epocas_val)
+
+    
+    def calculate_stats(self,Y_pred,Y_real):
+        print("PRED",Y_pred)
+        print("REAL",Y_real)
+
+    def get_coded_y(self,Y):
+        Y_ret = []
+
+        for y in Y:
+            max_y = y[0]
+            pos = 0
+            for i in range(1,len(y)):
+                if y[i] > max_y:
+                    max_y = y[i]
+                    pos = i
+            Y_ret.append(pos)
+        return Y_ret
+    
 
     def evaluar(self,X):        
         Y,_  = self.L_model_forward(X)
         return Y
+
+    def plot_classifcacion(self,epocas):
+        pass
 
     def plot_mse(self,epocas):
         x=[]
