@@ -70,6 +70,7 @@ def main():
 
     red = neural_network()
     red.type = 'regression'
+    red.flag = True
 
     red.structure = [5,4,5]
     red.initialize_parameters()

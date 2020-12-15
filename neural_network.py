@@ -82,7 +82,7 @@ class neural_network:
         if self.flag:        
             AL, cache = self.linear_activation_forward(A, parameters['W' + str(L)], parameters['b' + str(L)],"regression")    
         else:
-            AL, cache = self.linear_activation_forward(A, parameters['W' + str(L)], parameters['b' + str(L)],"sdasd")    
+            AL, cache = self.linear_activation_forward(A, parameters['W' + str(L)], parameters['b' + str(L)],"sdasd")
         caches.append(cache)
                 
         return AL, caches
