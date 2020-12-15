@@ -1,8 +1,10 @@
-
+import matplotlib as plt
 import numpy as np
 import pandas as pd
+from sklearn.metrics import f1_score, confusion_matrix, accuracy_score
 from sklearn.preprocessing import StandardScaler
 from neural_network import neural_network
+import seaborn
 
 
 def load_data(file_name):
@@ -40,9 +42,32 @@ nicky2 [[0 0]
 
  '''
 
+def stadistics(y_predict,y_true):
+    # f1
+    results = f1_score(y_true, y_predict, average=None)
+    acum = 0
+    total = len(results)
+    for j in results:
+        acum = acum + j
+    f1 = acum / total
+    print("Promedio F1 por clase: ")
+    #Accuracy
+    print("Accuracy: ",accuracy_score(y_true, y_predict))
+    #matriz
+    matrix = confusion_matrix(y_true, y_predict)
+    seaborn.heatmap(matrix, cmap='inferno', cbar=False, annot=True, fmt="")
+    plt.title("Matriz Confusion")
+    plt.show()
+
+
+
+
+
+
 def main():
     X,Y = load_data("part3_data_train.csv")
-    X_val,Y_val = load_data("part3_data_test.csv")
+    X_val,Y_val = load_data("part3_data_val.csv")
+    X_test,Y_test = load_data("part3_data_test.csv")
 
     red = neural_network()
     red.type = 'classification'
@@ -50,6 +75,12 @@ def main():
     red.structure = [5,4,5]
     red.initialize_parameters()
     red.L_layer_model(X,Y,50,X_val,Y_val,0.05,3)
+    predicts=[]
+    for i in X_test:
+        y_predict, _ = red.L_model_forward(i)
+        predicts.append(y_predict)
+    stadistics(red.get_coded_y(predicts),red.get_coded_y(Y_test))
+
 '''
     red.structure = [5,16,5]
     red.initialize_parameters()    

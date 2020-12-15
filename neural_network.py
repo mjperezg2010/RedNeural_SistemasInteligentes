@@ -4,7 +4,7 @@ import numpy as np
 import random
 import math
 import matplotlib.pyplot as plt
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, f1_score, accuracy_score
 
 
 class neural_network:
@@ -216,10 +216,47 @@ class neural_network:
         return Y
 
     def plot_classifcacion(self,epocas):
+        cont=-1
         x=[]
-        y=[]
+        yf1=[]
+        yacc=[]
         for i in epocas:
-            matrix1=epocas[i][0]
+            matrix1= self.get_coded_y(epocas[i][0])
+            matrix2=self.get_coded_y(epocas[i][1])
+            if cont ==-1:
+                #f1
+                results = f1_score(matrix2, matrix1,average=None)
+                acum = 0
+                total = len(results)
+                for j in results:
+                    acum = acum + j
+                temp= acum / total
+
+                yf1.append(temp)
+                yacc.append(accuracy_score(matrix2,matrix1))
+                x.append(i)
+                cont=0
+
+            if cont == 5:
+                #f1
+                results = f1_score(matrix2, matrix1, average=None)
+                acum = 0
+                total = len(results)
+                for j in results:
+                    acum = acum + j
+                temp = acum / total
+
+                yf1.append(temp)
+                yacc.append(accuracy_score(matrix2, matrix1))
+                x.append(i)
+                cont = 0
+            cont = cont + 1
+        plt.plot(x, yf1, label="F1-score")
+        plt.plot(x, yacc, label="Accuracy")
+        plt.legend()
+        plt.title("Estadistica")
+        plt.show()
+
 
     def plot_mse(self,epocas):
         x=[]
