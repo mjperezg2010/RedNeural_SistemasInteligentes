@@ -183,11 +183,14 @@ class neural_network:
                                         self.get_coded_y(epocas_val[str(j)][1]))
             '''
         if self.type == 'regression':
-            self.plot_mse(epocas)    
-            self.plot_mse(epocas_val) 
+            self.plot_mse(epocas)
+            if len(X_val) != 0:
+                self.plot_mse(epocas_val) 
         else:
             self.plot_classifcacion(epocas)
-            self.plot_classifcacion(epocas_val)
+            if len(X_val) != 0:
+                self.plot_classifcacion(epocas_val)
+            
 
     
     def calculate_stats(self,Y_pred,Y_real):
@@ -264,10 +267,5 @@ class neural_network:
         plt.title("MSE")
 
         plt.show()
-
-
-
-
-
 
 
