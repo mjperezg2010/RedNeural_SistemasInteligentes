@@ -25,18 +25,31 @@ def load_data(file):
         NewRange = (NewMax - NewMin)
         for j in range(len(scaled[:,i])):
             NewValue = (((scaled[:,i][j] - OldMin) * NewRange) / OldRange) + NewMin
+<<<<<<< HEAD
             scaled[:,i][j] = NewValue    
+=======
+            scaled[:,i][j] = NewValue
+    #print(scaled)
+>>>>>>> 022efdf79ada62e325ff8bf40edca22f9c1d5e74
 
 
     Y = np.array(Y)
+    Y= Y.astype(float)
 
     OldMin = min(Y)
     OldMax = max(Y)
+    NewMax = 1
+    NewMin = -1
+    NewRange = (NewMax - NewMin)
+
     OldRange = (OldMax - OldMin)
 
     for i in range(len(Y)):
         NewValue = (((Y[i] - OldMin) * NewRange) / OldRange) + NewMin
         Y[i] = NewValue
+
+
+    print(Y)
 
     return scaled, Y
 
@@ -49,6 +62,7 @@ def main():
     X,Y = load_data("part4_pokemon_go_train.csv")
     X_val,Y_val = load_data("part4_pokemon_go_validation.csv")
     X_test,Y_test = load_data("part4_pokemon_go_test.csv")    
+
 
     red = neural_network()
     red.type = 'regression'
