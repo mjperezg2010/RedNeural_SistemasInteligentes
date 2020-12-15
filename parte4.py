@@ -34,7 +34,7 @@ def main():
     red.type = 'regression'
     red.flag = True
 
-    red.structure = [5,4,5]
+    red.structure = [7,16,1]
     red.initialize_parameters()
     red.L_layer_model(X,Y,50,X_val,Y_val,0.05,3)
 
@@ -45,7 +45,7 @@ def main():
     stadistics(red.get_coded_y(predicts), red.get_coded_y(Y_test))
 
     print("--------------------")
-
+'''
     red.structure = [5,16,5]
     red.initialize_parameters()    
     red.L_layer_model(X,Y,50,X_val,Y_val,0.05,3)
@@ -77,7 +77,7 @@ def main():
         y_predict, _ = red.L_model_forward(np.array(i).reshape(len(i), 1))
         predicts.append(list(y_predict.reshape(len(y_predict))))
     stadistics(red.get_coded_y(predicts), red.get_coded_y(Y_test))
-
+'''
 
 
 if __name__ == '__main__':
