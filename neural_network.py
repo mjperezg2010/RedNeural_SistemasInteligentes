@@ -135,18 +135,36 @@ class neural_network:
         return self.params
 
 
-    def L_layer_model(self,X, Y):                            
+    def L_layer_model(self,X,Y,epochs,X_val=[],Y_val=[],epsilon=-1,max_rounds=-1):
         epocas = {}
+        actual_rounds = -1
+        mse_actual = 0
+        mse_prev = 100
         for j in range(0, self.epochs):
             predic = []
             original = []
             for i in range(len(X)):                
-                AL, caches = self.L_model_forward(np.array(X[i]).reshape(len(X[i]),1))                
+                AL, caches = self.L_model_forward(np.array(X[i]).reshape(len(X[i]),1))
                 grads = self.L_model_backward(AL, np.array(Y[i]).reshape(len(Y[i]),1), caches)
                 self.update_parameters(grads)
-                predic.append(list(AL.reshape(len(AL))))                
-                original.append(list(X[i]))
+                if len(X_val) != 0 and len(Y_val) != 0:
+                    Y_pred, _ = self.L_model_forward(np.array(X_val[i]).reshape(len(X_val[i]),1))
+                    predic.append(list(Y_pred.reshape(len(Y_pred))))                
+                    original.append(list(Y[i]))
+                else:
+                    predic.append(list(AL.reshape(len(AL))))                
+                    original.append(list(X[i]))
             epocas[str(j)] = [predic,original]
+            if epsilon!=-1 and max_rounds!=-1:
+                mse_actual = mean_squared_error(original, predic)
+                if abs(mse_actual-mse_prev) > epsilon:
+                    actual_rounds+=1                
+                else:
+                    actual_rounds = 0
+                mse_prev = mse_actual
+                if actual_rounds == max_rounds:
+                    break
+                                    
         self.plot_mse(epocas)        
 
     def evaluar(self,X):        

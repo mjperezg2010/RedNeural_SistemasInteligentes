@@ -30,7 +30,10 @@ def main():
     #asdsa.load_info('part1_red_prueba.json')
     #asdsa.L_layer_model(np.array([[0,0,1,1],[0,1,0,1]]),np.array([[0,0,0,1],[0,1,1,0]]))
     asdsa.L_layer_model(np.transpose(np.array([[0,0,1,1],[0,1,0,1]])),
-        np.transpose(np.array([[0,0,0,1],[0,1,1,0]])))
+
+        np.transpose(np.array([[0,0,0,1],[0,1,1,0]])),100)
+
+    
 
     Xsad,_ = asdsa.L_model_forward( np.array([[0],[0]] ))
     print(Xsad)
