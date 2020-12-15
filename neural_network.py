@@ -137,8 +137,7 @@ class neural_network:
 
     def L_layer_model(self,X, Y):                            
         epocas = {}
-        for j in range(0, 10):
-        #for j in range(0, self.epochs):
+        for j in range(0, self.epochs):
             predic = []
             original = []
             for i in range(len(X)):                
@@ -151,23 +150,41 @@ class neural_network:
                 
                 #print ("Cost after iteration %i: %f" %(i, cost))            
                 #costs.append(cost)
-            epocas['mse'+str(j)] = [predic,original]
-        print("epocas")
-        print(epocas)
-        #self.plot_mse(epocas)
+            epocas[str(j)] = [predic,original]
+        self.plot_mse(epocas)
     
     def plot_mse(self,epocas):
         x=[]
         y=[]
         matriz1=[]
         matriz2=[]
-        cont =0
+        cont =-1
+
+        for i in epocas:
+            matriz1=epocas[i][0]
+            matriz2=epocas[i][1]
+            if cont ==-1:
+                y.append(mean_squared_error(matriz2, matriz1))
+                x.append(i)
+                cont=0
+
+
+            if cont == 20:
+                y.append(mean_squared_error(matriz2, matriz1))
+                x.append(i)
+                cont = 0
+            cont = cont + 1
+        plt.plot(x, y)
+        plt.show()
+
+
+        """
         for i in epocas:
             for j in range(len(epocas[i][0])):
                 
                 matriz1.append([epocas[i][0][j][0][0],epocas[i][0][j][1][0]])
                 matriz2.append([epocas[i][1][j][0],epocas[i][1][j][1]])
-            """
+            
             matriz1=[[epocas[i][0][0][0][0],epocas[i][0][0][1][0]],
                       [epocas[i][0][1][0][0],epocas[i][0][1][1][0]],
                       [epocas[i][0][2][0][0],epocas[i][0][2][1][0]],
@@ -178,19 +195,10 @@ class neural_network:
                        [epocas[i][1][2][0], epocas[i][1][2][1]],
                        [epocas[i][1][3][0], epocas[i][1][3][1]]
                      ]
-            """
+            
+        """
 
-            y.append(mean_squared_error(matriz2, matriz1))
-            x.append(i)
-            if cont==20:
-                plt.plot(x, y)
-                plt.show()
-                x = []
-                y = []
-                cont=0
-            cont=cont+1
-        plt.plot(x,y)
-        plt.show()
+
 
 
 

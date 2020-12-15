@@ -21,11 +21,11 @@ def openJson(file_name):
 
 
 def main():
-    
+
     asdsa = neural_network ()
     asdsa.structure = [2,2,2]
     asdsa.learning_rate = 0.075
-    asdsa.epochs = 100
+    asdsa.epochs = 300
     asdsa.initialize_parameters()
     #asdsa.load_info('part1_red_prueba.json')
     #asdsa.L_layer_model(np.array([[0,0,1,1],[0,1,0,1]]),np.array([[0,0,0,1],[0,1,1,0]]))
