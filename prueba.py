@@ -1,14 +1,33 @@
 import numpy as np
-def plot_mse():
-    diccionario = {'nombre' : 'Carlos', 'edad' : 22, 'cursos': ['Python','Django','JavaScript'] }
-    matriz1=[[1,2],[2,3],[1,2],[2,3]]
-    matriz2 = [[1,2],[2,3],[1,2],[2,3]]
-    matriz1 = np.array(matriz1)
-    matriz2= np.array(matriz2)
-    epocas = {'mse0':[matriz1,matriz2]}
-
-    print(epocas['mse0'][0])
-    pass
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
 
 
-plot_mse()
+def load_data():
+    data = pd.read_csv("part3_data_val.csv")
+    X = data.loc[:, data.columns != 'clase']
+    Ytemp = data['clase']
+
+    scaler = StandardScaler()
+    scaled = scaler.fit_transform(X)
+    X = pd.DataFrame(scaled)
+    Y=[]
+    for i in Ytemp.values:
+        if i == 'pizza':
+            Y.append([1,0,0,0,0])
+        elif i == 'hamburguesa':
+            Y.append([0, 1, 0, 0, 0])
+        elif i == 'arroz_frito':
+            Y.append([0, 0, 1, 0, 0])
+        elif i == 'ensalada':
+            Y.append([0, 0, 0, 1, 0])
+        elif i == 'pollo_horneado':
+            Y.append([0, 0, 0, 0, 1])
+
+    return np.array(X.values),np.transpose(Y)
+
+
+
+
+
+load_data()
