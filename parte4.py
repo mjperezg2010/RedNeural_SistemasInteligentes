@@ -13,9 +13,10 @@ def load_data(file):
     X = X.loc[:, X.columns != 'PC']
     Y = data['PC']
 
-    #scaler = StandardScaler()
-    #scaled = scaler.fit_transform(X)
-    scaled = np.array(X.values)
+    scaler = StandardScaler()
+    scaled = scaler.fit_transform(X)
+    #scaled = np.array(X.values)
+    """
     for i in range(len(scaled[0])):
         OldMin = min(scaled[:,i])
         OldMax = max(scaled[:,i])
@@ -27,11 +28,19 @@ def load_data(file):
             NewValue = (((scaled[:,i][j] - OldMin) * NewRange) / OldRange) + NewMin
             scaled[:,i][j] = NewValue
     #print(scaled)
+    """
+    scaler1 = StandardScaler()
 
+    #Y = np.array(Y)
+    temp = np.zeros((1,len(Y)))
+    for i in range(len(Y)):
+        temp[0][i]=Y.loc[i]
+    Y=temp
+    Y = scaler1.fit_transform(Y)
 
-    Y = np.array(Y)
+    """
     Y= Y.astype(float)
-
+    
     OldMin = min(Y)
     OldMax = max(Y)
     NewMax = 1
@@ -43,8 +52,8 @@ def load_data(file):
     for i in range(len(Y)):
         NewValue = (((Y[i] - OldMin) * NewRange) / OldRange) + NewMin
         Y[i] = NewValue    
-
-    return np.transpose(scaled), Y.reshape(1,len(Y))
+    """
+    return np.transpose(scaled), Y
 
 def stadistics(y_predicts, y_true):    
     print("MSE: ",mean_squared_error(y_true, y_predicts))
