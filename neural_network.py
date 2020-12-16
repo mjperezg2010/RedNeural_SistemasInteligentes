@@ -8,7 +8,7 @@ from sklearn.metrics import mean_squared_error, f1_score, accuracy_score
 
 class neural_network:
     def __init__(self):
-        self.learning_rate = 0.075
+        self.learning_rate = 0.25
         self.epochs = 100
         self.epsilon = -1
         self.type = 'regression'
@@ -79,18 +79,12 @@ class neural_network:
             caches.append(cache)
 
         if self.flag:        
-            AL, cache = self.linear_activation_forward(A, parameters['W' + str(L)], parameters['b' + str(L)],"regression")    
+            AL, cache = self.linear_activation_forward(A, parameters['W' + str(L)], parameters['b' + str(L)],"regression")
         else:
             AL, cache = self.linear_activation_forward(A, parameters['W' + str(L)], parameters['b' + str(L)],"sdasd")
         caches.append(cache)
                 
         return AL, caches
-
-    def compute_cost(self,AL, Y):    
-        m = Y.shape[1]
-        cost = (-1/m)*np.sum(Y*np.log(AL)+(1-Y)*np.log(1-AL))    
-        cost = np.squeeze(cost)        
-        return cost
 
     def linear_backward(self,dZ, cache):
         A_prev, W, b = cache
@@ -158,15 +152,16 @@ class neural_network:
         mse_actual = 0
         mse_prev = 100
         self.epochs = epochs
-        for j in range(0, epochs):
+        for j in range(0, epochs):            
             predic = []
             original = []
             for i in range(len(X)):                
                 AL, caches = self.L_model_forward(np.array(X[i]).reshape(len(X[i]),1))
                 grads = self.L_model_backward(AL, np.array(Y[i]).reshape(len(Y[i]),1), caches)
-                self.update_parameters(grads)                
-                predic.append(list(AL.reshape(len(AL))))                
-                original.append(list(Y[i]))
+                self.update_parameters(grads)
+                predic.append(AL.reshape(len(AL)))
+                original.append(Y[i])
+            
             epocas[str(j)] = [predic,original]
 
             _predic = []
@@ -177,6 +172,7 @@ class neural_network:
                 _original.append(list(Y_val[i]))
             epocas_val[str(j)] = [_predic,_original]
 
+            
             if epsilon!=-1 and max_rounds!=-1:
                 mse_actual = mean_squared_error(original, predic)
                 if abs(mse_actual-mse_prev) > epsilon:
@@ -186,6 +182,7 @@ class neural_network:
                 mse_prev = mse_actual
                 if actual_rounds == max_rounds:
                     break
+                
        
         if self.type == 'regression':
             self.plot_mse(epocas)
@@ -264,6 +261,7 @@ class neural_network:
 
 
     def plot_mse(self,epocas):
+        
         x=[]
         y=[]
         ymin=[]
@@ -271,40 +269,42 @@ class neural_network:
         matriz1=[]
         matriz2=[]
         cont =-1
+        
 
         for i in epocas:
             matriz1=epocas[i][0]
             matriz2=epocas[i][1]
             #Minimun and maximun
-            list = []
+            
+            list1 = []
             for j in range(len(matriz1)):
                 for k in range(len(matriz1[0])):
                     #print(matriz1[j][k])
                     temp = mean_squared_error([matriz2[j][k]], [matriz1[j][k]])
-                    list.append(temp)
+                    list1.append(temp)
 
 
 
             if cont ==-1:
                 y.append(mean_squared_error(matriz2, matriz1))
                 x.append(i)
-                ymin.append(min(list))
-                ymax.append(max(list))
+                ymin.append(min(list1))
+                ymax.append(max(list1))
 
                 cont=0
 
 
-            if cont == 10:
+            if cont == 1:
                 y.append(mean_squared_error(matriz2, matriz1))
-                ymin.append(min(list))
-                ymax.append(max(list))
+                ymin.append(min(list1))
+                ymax.append(max(list1))
                 x.append(i)
                 cont = 0
             cont = cont + 1
         plt.plot(x, y, label="MSE")
         plt.plot(x, ymin, label="MSE minumun")
         plt.plot(x, ymax, label="MSE maximun")
-        plt.ylim(0, 1)
+        #plt.ylim(0, 1)
         plt.legend()
         plt.title("MSE")
 

@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import f1_score, confusion_matrix, accuracy_score
 from sklearn.preprocessing import StandardScaler
-from neural_network import neural_network
+from NeuralNetwork import NeuralNetwork
 import seaborn
 
 
@@ -28,21 +28,11 @@ def load_data(file_name):
         elif i == 'pollo_horneado':
             Y.append([0, 0, 0, 0, 1])
 
-    return np.array(X.values),np.array(Y)
+    return np.transpose(np.array(X.values)),np.transpose(np.array(Y))
 
-'''
-nicky1 [[0 0]
- [0 1]
- [1 0]
- [1 1]]
-nicky2 [[0 0]
- [0 1]
- [0 1]
- [1 0]]
 
- '''
+def stadistics(y_predict,y_true):    
 
-def stadistics(y_predict,y_true):
     # f1
     results = f1_score(y_true, y_predict, average=None)
     acum = 0
@@ -63,30 +53,37 @@ def stadistics(y_predict,y_true):
     plt.show()
 
 
-
-
-
-
 def main():
     X,Y = load_data("part3_data_train.csv")
     X_val,Y_val = load_data("part3_data_val.csv")
     X_test,Y_test = load_data("part3_data_test.csv")
 
-    red = neural_network()
-    red.type = 'classification'
+    print("1",X.shape)
+    print("2",Y.shape)
+
+    red = NeuralNetwork()
+    red.type = 'C'
 
     red.structure = [5,4,5]
     red.initialize_parameters()
-    red.L_layer_model(X,Y,50,X_val,Y_val,0.05,3)
-
+    red.back_propagation2(X,Y,10,X_val,Y_val,0.05,3)
+    
     predicts = []
-    for i in X_test:
-        y_predict, _ = red.L_model_forward(np.array(i).reshape(len(i), 1))
-        predicts.append(list(y_predict.reshape(len(y_predict))))
-    stadistics(red.get_coded_y(predicts), red.get_coded_y(Y_test))
+    original=[]
+    X_test_t = np.transpose(X_test)
+    Y_test_t = np.transpose(Y_test)
+        
+    for j in range(len(X_test_t)):
+        X_eval = X_test_t[j].reshape(len(X_test_t[j]),1)
+        Y_eval = Y_test_t[j].reshape(len(Y_test_t[j]),1)
+        y_predict, _ = red.L_model_forward(X_eval)        
+        predicts.append(y_predict.reshape(len(y_predict)))
+        original.append(Y_eval.reshape(len(Y_eval)))
+
+    stadistics(red.get_coded_y(predicts), red.get_coded_y(original))
 
     print("--------------------")
-
+'''
     red.structure = [5,16,5]
     red.initialize_parameters()    
     red.L_layer_model(X,Y,50,X_val,Y_val,0.05,3)
@@ -119,7 +116,7 @@ def main():
         predicts.append(list(y_predict.reshape(len(y_predict))))
     stadistics(red.get_coded_y(predicts), red.get_coded_y(Y_test))
 
-
+'''
 
 if __name__ == '__main__':
     main()
