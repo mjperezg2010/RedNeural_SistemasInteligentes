@@ -39,7 +39,7 @@ def load_data2(file):
 
     return np.array(X) ,np.array(Y)
 
-def json1(diccionario):
+def savejson1(diccionario):
     entradas=(str)(len(diccionario['W1'][0]))
     tempjson = '{\n     "entradas": '+entradas+',\n     "capas": ['
     for i in range(1,(int)(len(diccionario)/2+1)):
@@ -83,4 +83,4 @@ b1 = np.array([[0.00031126], [0.00014301], [-0.00041087],[-0.00055001]])
 array2 = np.array([[-0.00810052, -0.00311021, 0.00663479, 0.01961822]])
 b2 = np.array([[-0.07649589]])
 diccionario = {'W1':array1,'b1':b1,'W2':array2,'b2': b2}
-json1(diccionario)
+#json1(diccionario)

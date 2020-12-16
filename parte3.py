@@ -5,6 +5,7 @@ from sklearn.metrics import f1_score, confusion_matrix, accuracy_score
 from sklearn.preprocessing import StandardScaler
 from NeuralNetwork import NeuralNetwork
 import seaborn
+import sys
 
 
 def load_data(file_name):
@@ -54,16 +55,16 @@ def stadistics(y_predict,y_true):
 
 
 def main():
-    X,Y = load_data("part3_data_train.csv")
-    X_val,Y_val = load_data("part3_data_val.csv")
-    X_test,Y_test = load_data("part3_data_test.csv")
+    X,Y = load_data(sys.argv[1])
+    X_val,Y_val = load_data(sys.argv[2])
+    X_test,Y_test = load_data(sys.argv[3])
 
     print("1",X.shape)
     print("2",Y.shape)
 
     red = NeuralNetwork()
     red.type = 'C'
-
+    #1
     red.structure = [5,4,5]
     red.initialize_parameters()
     red.back_propagation2(X,Y,10,X_val,Y_val,0.05,3)
@@ -83,40 +84,86 @@ def main():
     stadistics(red.get_coded_y(predicts), red.get_coded_y(original))
 
     print("--------------------")
-'''
-    red.structure = [5,16,5]
-    red.initialize_parameters()    
-    red.L_layer_model(X,Y,50,X_val,Y_val,0.05,3)
+    #2
+    red.structure = [5, 16, 5]
+    red.initialize_parameters()
+    red.back_propagation2(X, Y, 10, X_val, Y_val, 0.05, 3)
 
     predicts = []
-    for i in X_test:
-        y_predict, _ = red.L_model_forward(np.array(i).reshape(len(i), 1))
-        predicts.append(list(y_predict.reshape(len(y_predict))))
-    stadistics(red.get_coded_y(predicts), red.get_coded_y(Y_test))
+    original = []
+    X_test_t = np.transpose(X_test)
+    Y_test_t = np.transpose(Y_test)
+
+    for j in range(len(X_test_t)):
+        X_eval = X_test_t[j].reshape(len(X_test_t[j]), 1)
+        Y_eval = Y_test_t[j].reshape(len(Y_test_t[j]), 1)
+        y_predict, _ = red.L_model_forward(X_eval)
+        predicts.append(y_predict.reshape(len(y_predict)))
+        original.append(Y_eval.reshape(len(Y_eval)))
+
+    stadistics(red.get_coded_y(predicts), red.get_coded_y(original))
 
     print("--------------------")
-    red.structure = [5,32,5]
-    red.initialize_parameters()    
-    red.L_layer_model(X,Y,50,X_val,Y_val,0.05,3)
+    # 3
+    red.structure = [5, 32, 5]
+    red.initialize_parameters()
+    red.back_propagation2(X, Y, 10, X_val, Y_val, 0.05, 3)
 
     predicts = []
-    for i in X_test:
-        y_predict, _ = red.L_model_forward(np.array(i).reshape(len(i), 1))
-        predicts.append(list(y_predict.reshape(len(y_predict))))
-    stadistics(red.get_coded_y(predicts), red.get_coded_y(Y_test))
+    original = []
+    X_test_t = np.transpose(X_test)
+    Y_test_t = np.transpose(Y_test)
+
+    for j in range(len(X_test_t)):
+        X_eval = X_test_t[j].reshape(len(X_test_t[j]), 1)
+        Y_eval = Y_test_t[j].reshape(len(Y_test_t[j]), 1)
+        y_predict, _ = red.L_model_forward(X_eval)
+        predicts.append(y_predict.reshape(len(y_predict)))
+        original.append(Y_eval.reshape(len(Y_eval)))
+
+    stadistics(red.get_coded_y(predicts), red.get_coded_y(original))
 
     print("--------------------")
-    red.structure = [5,64,5]
-    red.initialize_parameters()    
-    red.L_layer_model(X,Y,50,X_val,Y_val,0.05,3)
+    #4
+    red.structure = [5, 64, 5]
+    red.initialize_parameters()
+    red.back_propagation2(X, Y, 10, X_val, Y_val, 0.05, 3)
 
     predicts = []
-    for i in X_test:
-        y_predict, _ = red.L_model_forward(np.array(i).reshape(len(i), 1))
-        predicts.append(list(y_predict.reshape(len(y_predict))))
-    stadistics(red.get_coded_y(predicts), red.get_coded_y(Y_test))
+    original = []
+    X_test_t = np.transpose(X_test)
+    Y_test_t = np.transpose(Y_test)
 
-'''
+    for j in range(len(X_test_t)):
+        X_eval = X_test_t[j].reshape(len(X_test_t[j]), 1)
+        Y_eval = Y_test_t[j].reshape(len(Y_test_t[j]), 1)
+        y_predict, _ = red.L_model_forward(X_eval)
+        predicts.append(y_predict.reshape(len(y_predict)))
+        original.append(Y_eval.reshape(len(Y_eval)))
+
+    stadistics(red.get_coded_y(predicts), red.get_coded_y(original))
+
+    print("--------------------")
+    #5
+    red.structure = [5, 128, 5]
+    red.initialize_parameters()
+    red.back_propagation2(X, Y, 10, X_val, Y_val, 0.05, 3)
+
+    predicts = []
+    original = []
+    X_test_t = np.transpose(X_test)
+    Y_test_t = np.transpose(Y_test)
+
+    for j in range(len(X_test_t)):
+        X_eval = X_test_t[j].reshape(len(X_test_t[j]), 1)
+        Y_eval = Y_test_t[j].reshape(len(Y_test_t[j]), 1)
+        y_predict, _ = red.L_model_forward(X_eval)
+        predicts.append(y_predict.reshape(len(y_predict)))
+        original.append(Y_eval.reshape(len(Y_eval)))
+
+    stadistics(red.get_coded_y(predicts), red.get_coded_y(original))
+
+    print("--------------------")
 
 if __name__ == '__main__':
     main()

@@ -1,10 +1,11 @@
 from NeuralNetwork import NeuralNetwork
 import numpy as np
+import sys
 
 def main():
     red = NeuralNetwork ()                
     red.structure = [2,2,2]
-    red.load_params('part1_red_prueba.json')    
+    red.load_params(sys.argv[1])
     data = np.array([np.array([[0],[0]]),
                     np.array([[1],[0]]),
                     np.array([[0],[1]]),

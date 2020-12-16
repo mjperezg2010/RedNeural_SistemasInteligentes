@@ -1,10 +1,8 @@
 import numpy as np;
 import matplotlib.pyplot as plt;
 import pandas as pd
-from sklearn.metrics import f1_score, confusion_matrix, accuracy_score, mean_squared_error
+from sklearn.metrics import f1_score,accuracy_score, mean_squared_error
 from sklearn.preprocessing import StandardScaler
-from neural_network import neural_network
-import seaborn
 import json
 
 class NeuralNetwork:
@@ -28,13 +26,15 @@ class NeuralNetwork:
         return dZ
     
     def initialize_parameters(self):
-        layer_dims = self.structure
+        structure = self.structure
         parameters = {}
-        L = len(layer_dims)
+        L = len(structure)
         for l in range(1, L):
-            parameters["W" + str(l)] = np.random.randn(layer_dims[l], layer_dims[l - 1]) * 0.01
-            parameters["b" + str(l)] = np.zeros((layer_dims[l], 1))
-        self.parameters = parameters        
+            parameters['W' + str(l)] = np.random.uniform(low=-1, high=1, size=(structure[l], structure[l - 1]))
+            parameters['b' + str(l)] = np.random.uniform(low=-1, high=1, size=(structure[l], 1))
+        self.parameters = parameters
+
+
 
     def linear_forward(self,A, W, b):
         Z = np.dot(W, A) + b
@@ -169,7 +169,7 @@ class NeuralNetwork:
             epocas[str(i)] = [predic,original]
             if flag:
                 epocas_val[str(i)] = [predic_val,original_val]
-
+            epsilon =-1
             if epsilon != -1:
                 if abs(mse - mse_prev) < epsilon:
                     rounds+=1
@@ -383,7 +383,7 @@ class NeuralNetwork:
 
                 cont = 0
 
-            if cont == 5:
+            if cont == 1:
                 y_t.append(mean_squared_error(matriz2, matriz1))
                 ymin.append(min(list1))
                 ymax.append(max(list1))
@@ -491,25 +491,3 @@ class NeuralNetwork:
 
         return np.array(X.values),np.array(Y)
 
-'''
-red = NeuralNetwork()
-
-X,Y = red.load_data_P2("part2_train_data.csv")
-
-red.initialize_parameters([2,2,2])
-red.back_propagation(X,Y,100,[],[],0,0)
-
-#X_temp = np.transpose(X)
-#Y_temp = np.transpose(Y)
-
-#print(red.evaluar( [[0],[1]] ) )
-
-
-data = np.array([np.array([[2],[2]]),
-                    np.array([[1],[0]]),
-                    np.array([[0],[1]]),
-                    np.array([[1],[1]]) 
-                ])
-print("<0,0>")
-print(red.evaluar(np.array([[1],[1]])))
-'''
