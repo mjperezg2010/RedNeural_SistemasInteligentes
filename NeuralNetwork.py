@@ -361,8 +361,6 @@ class NeuralNetwork:
         y_t=[]
         ymin=[]
         ymax=[]
-        matriz1=[]
-        matriz2=[]
         cont =-1
         
 
@@ -370,24 +368,36 @@ class NeuralNetwork:
             matriz1=epocas[i][0]
             matriz2=epocas[i][1]
             #Minimun and maximun
-            '''
+
             list1 = []
-            for j in range(len(matriz1)):            
+            for j in range(len(matriz1)):
                 #print(matriz1[j][k])
                 temp = mean_squared_error(matriz2[j], matriz1[j])
                 list1.append(temp)
 
-            print("hola")
-            '''
+            if cont == -1:
+                y_t.append(mean_squared_error(matriz2, matriz1))
+                x_t.append(i)
+                ymin.append(min(list1))
+                ymax.append(max(list1))
+
+                cont = 0
+
+            if cont == 5:
+                y_t.append(mean_squared_error(matriz2, matriz1))
+                ymin.append(min(list1))
+                ymax.append(max(list1))
+                x_t.append(i)
+                cont = 0
+            cont = cont+1
             
                         
-            y_t.append(mean_squared_error(matriz2, matriz1))
-            x_t.append(i)
+            #y_t.append(mean_squared_error(matriz2, matriz1))
+            #x_t.append(i)
             
         plt.plot(x_t, y_t, label="MSE")
-        #plt.plot(x, ymin, label="MSE minumun")
-        #plt.plot(x, ymax, label="MSE maximun")
-        #plt.ylim(0, 1)
+        plt.plot(x_t, ymin, label="MSE minumun")
+        plt.plot(x_t, ymax, label="MSE maximun")
         plt.legend()
         plt.title("MSE")
 
