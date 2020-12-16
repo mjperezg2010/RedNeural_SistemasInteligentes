@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import f1_score, confusion_matrix, accuracy_score, mean_squared_error
 from sklearn.preprocessing import StandardScaler
-from neural_network import neural_network
+from NeuralNetwork import NeuralNetwork
 import seaborn
 
 
@@ -25,12 +25,8 @@ def load_data(file):
         NewRange = (NewMax - NewMin)
         for j in range(len(scaled[:,i])):
             NewValue = (((scaled[:,i][j] - OldMin) * NewRange) / OldRange) + NewMin
-<<<<<<< HEAD
-            scaled[:,i][j] = NewValue    
-=======
             scaled[:,i][j] = NewValue
     #print(scaled)
->>>>>>> 022efdf79ada62e325ff8bf40edca22f9c1d5e74
 
 
     Y = np.array(Y)
@@ -46,39 +42,43 @@ def load_data(file):
 
     for i in range(len(Y)):
         NewValue = (((Y[i] - OldMin) * NewRange) / OldRange) + NewMin
-        Y[i] = NewValue
+        Y[i] = NewValue    
 
+    return np.transpose(scaled), Y.reshape(1,len(Y))
 
-    print(Y)
-
-    return scaled, Y
-
-def stadistics(y_predicts, y_true):
-    print("predi: ",y_predicts)
-    print("true: ",y_true)
+def stadistics(y_predicts, y_true):    
     print("MSE: ",mean_squared_error(y_true, y_predicts))
+
 
 def main():
     X,Y = load_data("part4_pokemon_go_train.csv")
     X_val,Y_val = load_data("part4_pokemon_go_validation.csv")
-    X_test,Y_test = load_data("part4_pokemon_go_test.csv")    
+    X_test,Y_test = load_data("part4_pokemon_go_test.csv")
 
-
-    red = neural_network()
-    red.type = 'regression'
-    red.flag = True
-
+    
+    red = NeuralNetwork()
+    red.out = 'linear'
     red.structure = [7,16,1]
     red.initialize_parameters()
-    red.L_layer_model(X,Y.reshape(Y.shape[0],1),50,X_val,Y_val.reshape(Y_val.shape[0],1),0.05,3)
 
+    print("X",X.shape)
+    print("Y",Y.shape)
+
+    red.back_propagation3(X,Y,5,X_val,Y_val,0.05,3)
+    
     predicts = []
-    for i in X_test:
-        y_predict, _ = red.L_model_forward(np.array(i).reshape(len(i), 1))
-        predicts.append(list(y_predict.reshape(len(y_predict))))
-    stadistics(predicts, Y_test)
+    original=[]
+    X_test_t = np.transpose(X_test)
+    Y_test_t = np.transpose(Y_test)
+        
+    for j in range(len(X_test_t)):
+        X_eval = X_test_t[j].reshape(len(X_test_t[j]),1)
+        Y_eval = Y_test_t[j].reshape(len(Y_test_t[j]),1)
+        y_predict, _ = red.L_model_forward(X_eval)        
+        predicts.append(y_predict.reshape(len(y_predict)))
+        original.append(Y_eval.reshape(len(Y_eval)))
 
-    print("--------------------")
+    stadistics(predicts, original)
 '''
     red.structure = [5,16,5]
     red.initialize_parameters()    

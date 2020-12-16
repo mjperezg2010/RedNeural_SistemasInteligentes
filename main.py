@@ -44,7 +44,7 @@ def main():
     
     #Xsad,_ = asdsa.L_model_forward( np.array([[0],[0]] ))
     #print(Xsad)
-
+    
 
 
 if __name__ == '__main__':

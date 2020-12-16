@@ -1,9 +1,10 @@
-from neural_network import neural_network
+from NeuralNetwork import NeuralNetwork
 import numpy as np
 
 def main():
-    red = neural_network ()                
-    red.load_info('part1_red_prueba.json')    
+    red = NeuralNetwork ()                
+    red.structure = [2,2,2]
+    red.load_params('part1_red_prueba.json')    
     data = np.array([np.array([[0],[0]]),
                     np.array([[1],[0]]),
                     np.array([[0],[1]]),
@@ -19,7 +20,7 @@ def main():
 
     red.initialize_parameters()
 
-    print("PARAMS:",red.params)
+    print("PARAMS:",red.parameters)
 
     print("<0,0>")
     print(red.evaluar(data[0]))
@@ -29,8 +30,6 @@ def main():
     print(red.evaluar(data[2]))
     print("<1,1>")
     print(red.evaluar(data[3]))
-
-
 
 if __name__ == '__main__':
     main()
